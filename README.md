@@ -1,6 +1,6 @@
 # rouyi
 
-首先声明这是由rouyi项目改造过来的，请无视项目中cogent等字段！！！
+首先声明这是由[rouyi](https://gitee.com/y_project/RuoYi)项目改造过来的，请无视项目中cogent等字段！！！
 
 此项目使用者只需关注比rouyi项目新增的部分即可。
 
