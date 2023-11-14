@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cogent.system.mapper.BagMapper">
+
+    <resultMap id="bagResult" type="com.cogent.system.domain.DO.bag.BagDO">
+        <id property="id" column="id"/>
+        <result property="devName" column="dev_name"/>
+        <result property="devType" column="dev_type"/>
+        <result property="sn" column="sn"/>
+        <result property="gbId" column="gb_id"/>
+        <result property="foldbackState" column="foldback_state"/>
+        <result property="foldbackStreamId" column="foldback_stream_id"/>
+        <result property="state" column="state"/>
+        <result property="recordSwitch" column="record_switch"/>
+    </resultMap>
+
+    <resultMap id="GBResult" type="com.cogent.system.domain.vo.bag.GB">
+        <id property="devId" column="dev_id"/>
+        <result property="user" column="user"/>
+        <result property="passwd" column="passwd"/>
+        <result property="platformIp" column="platform_ip"/>
+        <result property="platformPort" column="platform_port"/>
+        <result property="platformDomain" column="platform_domain"/>
+        <result property="platformId" column="platform_id"/>
+        <result property="heartbeatCycle" column="heartbeat_cycle"/>
+        <result property="validityTime" column="validity_time"/>
+        <result property="videoChannelId" column="video_channel_id"/>
+    </resultMap>
+
+    <insert id="insertBag" parameterType="com.cogent.system.domain.DO.bag.BagDO">
+        insert into backpack (sn, dev_name, dev_type, gb_id, android_version,state,create_time)
+        values (#{sn}, #{devName}, #{devType}, #{gbId}, #{androidVersion},#{state},sysdate())
+    </insert>
+
+    <insert id="insertGB" parameterType="com.cogent.system.domain.vo.bag.GB">
+        insert into backpack_GB(dev_id, user, passwd, platform_ip, platform_port, platform_domain, platform_id,
+                                heartbeat_cycle, validity_time, video_channel_id)
+        values (#{devId}, #{user}, #{passwd}, #{platformIp}, #{platformPort}, #{platformDomain}, #{platformId},
+                #{heartbeatCycle}, #{validityTime}, #{videoChannelId})
+    </insert>
+
+    <update id="updateGB" parameterType="com.cogent.system.domain.vo.bag.GB">
+        update backpack_GB
+        <set>
+            <if test="devId != null and devId != ''">dev_id = #{devId},</if>
+            <if test="user != null and user != ''">user = #{user},</if>
+            <if test="passwd != null and passwd != ''">passwd = #{passwd},</if>
+            <if test="platformIp != null and platformIp != ''">platform_ip = #{platformIp},</if>
+            <if test="platformPort != null">platform_port = #{platformPort},</if>
+            <if test="platformDomain != null">platform_domain = #{platformDomain},</if>
+            <if test="platformId != null">platform_id = #{platformId},</if>
+            <if test="heartbeatCycle != null">heartbeat_cycle = #{heartbeatCycle},</if>
+            <if test="validityTime != null">validity_time = #{validityTime},</if>
+            <if test="videoChannelId != null and videoChannelId != ''">video_channel_id = #{videoChannelId}</if>
+        </set>
+        where dev_id = #{devId}
+    </update>
+
+    <update id="updateBag" parameterType="com.cogent.system.domain.DO.bag.BagDO">
+        update backpack
+        <set>
+            <if test="sn != null and sn != ''">sn = #{sn},</if>
+            <if test="devName != null and devName != ''">dev_name = #{devName},</if>
+            <if test="devType != null and devType != ''">dev_type = #{devType},</if>
+            <if test="gbId != null and gbId != ''">gb_id = #{gbId},</if>
+            <if test="foldbackState != null">foldback_state = #{foldbackState},</if>
+            <if test="isBlacklist != null">is_blacklist = #{isBlacklist},</if>
+            <if test="foldbackStreamId != null">foldback_stream_id = #{foldbackStreamId},</if>
+            <if test="androidVersion != null">android_version = #{androidVersion},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="recordSwitch != null">record_switch = #{recordSwitch},</if>
+            update_time = sysdate()
+        </set>
+        where id = #{id} and is_blacklist = 0
+    </update>
+    <update id="setAutoReg" parameterType="integer">
+        update backpack_aotu_reg
+        set aotu_reg = #{enable}
+    </update>
+
+    <delete id="deleteBag">
+        delete from backpack where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <update id="updateBagBlacklistBySN">
+        update backpack set is_blacklist = 0 where sn in
+        <foreach collection="list" item="sn" open="(" close=")" separator=",">
+            #{sn}
+        </foreach>
+    </update>
+    <update id="updateBagState">
+        update backpack set state = #{state} where sn in
+        <foreach collection="list" item="sn" open="(" close=")" separator=",">
+            #{sn}
+        </foreach>
+    </update>
+
+    <delete id="deleteGB">
+        delete from backpack_GB where dev_id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getBagList" parameterType="com.cogent.system.domain.DO.bag.BagDO" resultMap="bagResult">
+        select id, sn, dev_name, dev_type,gb_id,foldback_state,state,record_switch from backpack
+        where is_blacklist = 0
+        <if test="sn != null and sn != ''">
+            AND sn like concat('%', #{sn}, '%')
+        </if>
+        <if test="devType != null and devType != ''">
+            AND dev_type = #{devType}
+        </if>
+        <if test="devName != null and devName != ''">
+            AND dev_name like concat('%', #{devName}, '%')
+        </if> order by state desc
+    </select>
+
+    <select id="getAndroidList" resultMap="bagResult">
+        select id, sn, dev_name, dev_type, gb_id, foldback_state, state
+        from backpack
+        where is_blacklist = 0
+          and android_version is not null
+    </select>
+
+
+    <select id="getBagById" resultMap="bagResult">
+        select id, sn, dev_name, dev_type, gb_id, foldback_state,state
+        from backpack
+        where id = #{id}
+          and is_blacklist = 0
+    </select>
+
+    <select id="selectGBById" resultMap="GBResult">
+        select dev_id,
+               user,
+               passwd,
+               platform_ip,
+               platform_port,
+               platform_domain,
+               platform_id,
+               heartbeat_cycle,
+               validity_time,
+               video_channel_id
+        from backpack_GB
+        where dev_id = #{id}
+    </select>
+
+    <select id="getBagBySN" resultMap="bagResult">
+        select id, sn, dev_name, dev_type, gb_id, foldback_state,state,record_switch
+        from backpack
+        where sn = #{sn} and is_blacklist = 0
+    </select>
+
+    <select id="getBagByDevName" resultMap="bagResult">
+        select id, sn, dev_name, dev_type, gb_id, foldback_state
+        from backpack
+        where dev_name = #{devName} and is_blacklist = 0
+    </select>
+
+    <select id="getAutoReg" resultType="java.lang.Integer">
+        SELECT aotu_reg
+        FROM backpack_aotu_reg;
+    </select>
+
+    <select id="getBagListByIds" resultMap="bagResult">
+        select id, sn, dev_name, dev_type, gb_id,foldback_state from backpack where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getBagBlackList" resultType="java.lang.String">
+        select sn
+        from backpack_blacklist
+    </select>
+
+    <select id="getBagListBySNList" resultMap="bagResult">
+        select id, sn, dev_name, dev_type,gb_id,foldback_state from backpack
+        where is_blacklist = 0 and sn in
+        <foreach collection="list" item="sn" open="(" close=")" separator=",">
+            #{sn}
+        </foreach>
+    </select>
+    <select id="selectFoldbackStateCount" resultType="java.lang.Integer" parameterType="string">
+        select count(*)
+        from backpack
+        where is_blacklist = 0
+          and foldback_state = 1
+          and foldback_stream_id = #{streamId}
+    </select>
+
+    <select id="selectBagCount" resultType="java.lang.Integer">
+        select count(*)
+        from backpack
+        where is_blacklist = 0
+    </select>
+
+</mapper>

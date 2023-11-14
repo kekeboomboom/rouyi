@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cogent.system.mapper.DestMapper">
+
+    <resultMap type="com.cogent.system.domain.DO.route.DestDO" id="destResult">
+        <id property="id" column="id"/>
+        <result property="destName" column="dest_name"/>
+        <result property="protocol" column="protocol"/>
+        <result property="protocolType" column="protocol_type"/>
+        <result property="addr" column="addr"/>
+        <result property="port" column="port"/>
+        <result property="srtMore" column="srt_more"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="destUuid" column="dest_uuid"/>
+        <result property="srcUuid" column="src_uuid"/>
+        <result property="startStop" column="start_stop"/>
+        <result property="destState" column="dest_state"/>
+    </resultMap>
+
+    <sql id="selectDest">
+        select id,
+               dest_name,
+               protocol,
+               protocol_type,
+               addr,
+               port,
+               srt_more,
+               create_time,
+               update_time,
+               dest_uuid,
+               src_uuid,
+               start_stop,
+               dest_state,
+               is_sdi
+        from dest_device
+    </sql>
+
+    <select id="selectDestById" parameterType="Long" resultMap="destResult">
+        <include refid="selectDest"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectDestList" parameterType="com.cogent.system.domain.DO.route.DestDO" resultMap="destResult">
+        <include refid="selectDest"/>
+        <where>
+            dest_name not like 'default-preview%'
+            <if test="destName != null and destName != ''">
+                AND dest_name like concat('%', #{destName}, '%')
+            </if>
+            <if test="protocol != null and protocol != ''">
+                AND protocol = #{protocol}
+            </if>
+            <if test="addr != null and addr != ''">
+                AND addr like concat('%', #{addr}, '%')
+            </if>
+            <if test="isSdi != null and isSdi != ''">
+                AND is_sdi = #{isSdi}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectDestByIds" resultMap="destResult">
+        <include refid="selectDest"/>
+        where id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        order by id
+    </select>
+
+    <insert id="insertDest" parameterType="com.cogent.system.domain.DO.route.DestDO" useGeneratedKeys="true" keyProperty="id">
+        insert into dest_device (dest_name, protocol, protocol_type, addr, port, srt_more,
+                                 create_time, update_time, src_uuid, dest_uuid, start_stop, dest_state,is_sdi)
+        values (#{destName}, #{protocol}, #{protocolType}, #{addr}, #{port}, #{srtMore}, sysdate(), sysdate(),
+                #{srcUuid}, #{destUuid}, #{startStop}, #{destState},#{isSdi}) on duplicate key
+        update port= #{port},addr=#{addr},src_uuid=#{srcUuid},dest_uuid=#{destUuid},dest_state=#{destState}
+    </insert>
+
+    <insert id="insertOrUpdateDest">
+        insert into dest_device (dest_name, protocol, protocol_type, addr, port, srt_more,
+                                 create_time, update_time, src_uuid, dest_uuid, start_stop, dest_state)
+        values (#{destName}, #{protocol}, #{protocolType}, #{addr}, #{port}, #{srtMore}, sysdate(), sysdate(),
+                #{srcUuid}, #{destUuid}, #{startStop}, #{destState}) on duplicate key
+        update
+            protocol = #{protocol},
+            protocol_type = #{protocolType},
+            addr = #{addr},
+            port = #{port}
+    </insert>
+
+    <update id="updateDest" parameterType="com.cogent.system.domain.DO.route.DestDO">
+        update dest_device
+        <set>
+            <if test="destName != null and destName != ''">dest_name = #{destName},</if>
+            <if test="protocol != null and protocol != ''">protocol = #{protocol},</if>
+            <if test="protocolType != null and protocolType != ''">protocol_type = #{protocolType},</if>
+            <if test="addr != null and addr != ''">addr = #{addr},</if>
+            <if test="port != null">port = #{port},</if>
+            <if test="srtMore != null and srtMore != ''">srt_more = #{srtMore},</if>
+            <if test="srcUuid != null">src_uuid = #{srcUuid},</if>
+            <if test="destUuid != null">dest_uuid = #{destUuid},</if>
+            <if test="startStop != null">start_stop = #{startStop},</if>
+            <if test="destState != null">dest_state = #{destState},</if>
+            update_time = sysdate()
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateDestByName">
+        update dest_device
+        <set>
+            <if test="protocol != null and protocol != ''">protocol = #{protocol},</if>
+            <if test="protocolType != null and protocolType != ''">protocol_type = #{protocolType},</if>
+            <if test="addr != null and addr != ''">addr = #{addr},</if>
+            <if test="port != null and port != ''">port = #{port},</if>
+            <if test="srtMore != null and srtMore != ''">srt_more = #{srtMore},</if>
+            <if test="srcUuid != null and srcUuid != ''">src_uuid = #{srcUuid},</if>
+            <if test="destUuid != null and destUuid != ''">dest_uuid = #{destUuid},</if>
+            <if test="startStop != null">start_stop = #{startStop},</if>
+            <if test="destState != null">dest_state = #{destState},</if>
+            update_time = sysdate()
+        </set>
+        where dest_name = #{destName}
+    </update>
+
+    <delete id="deleteDestByIds">
+        delete from dest_device where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateDestRouteReleaseByDestIds">
+        update dest_device set src_uuid = "", dest_uuid="" , start_stop = 0,dest_state=0
+        where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+
+</mapper>

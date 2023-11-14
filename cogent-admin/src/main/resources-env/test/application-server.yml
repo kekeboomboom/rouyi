@@ -1,0 +1,15 @@
+server:
+  port: 8081
+
+
+smh:
+  #    base_url: http://127.0.0.1:9001  如果他们的SMH不是docker部署，而是在宿主机部署，那么docker要访问宿主机则不是127.0.0.1，而是 host.docker.internal
+  #  base_url: http://192.168.16.21:9001
+  base_url: http://119.3.88.71:9001
+
+gateway:
+  base_url: http://119.3.88.71:61616
+
+mediakit:
+  base_url: http://192.168.16.37:8081
+  secret: 035c73f7-bb6b-4889-a715-d9eb2d1925cc   # 这个值可以在mediakit配置文件中进行设置

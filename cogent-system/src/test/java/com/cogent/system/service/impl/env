@@ -1,0 +1,9 @@
+#Tue Jul 25 18:56:32 HKT 2023
+FOLDBACK_PORT=localhost
+GATEWAY_IP=192.168.16.46
+GB_ENABLE=false
+HOST_IP=localhost
+MEDIAKIT_IP=192.168.16.46
+SMH_IP=192.168.16.46
+interface=eth0
+externIp=

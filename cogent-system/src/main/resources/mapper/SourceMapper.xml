@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cogent.system.mapper.SourceMapper">
+
+    <resultMap type="com.cogent.system.domain.DO.route.SourceDO" id="sourceResult">
+        <id property="id" column="id"/>
+        <result property="sourceName" column="source_name"/>
+        <result property="protocol" column="protocol"/>
+        <result property="protocolType" column="protocol_type"/>
+        <result property="addr" column="addr"/>
+        <result property="port" column="port"/>
+        <result property="srtMore" column="srt_more"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="sourceState" column="source_state"/>
+    </resultMap>
+
+    <sql id="selectSource">
+        select id,
+               source_name,
+               protocol,
+               protocol_type,
+               addr,
+               port,
+               srt_more,
+               create_time,
+               update_time,
+               source_state
+        from source_device
+    </sql>
+
+    <select id="selectSourceById" parameterType="Long" resultMap="sourceResult">
+        <include refid="selectSource"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectSourceByIds" resultMap="sourceResult">
+        <include refid="selectSource"/>
+        where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectSourceList" parameterType="com.cogent.system.domain.DO.route.SourceDO" resultMap="sourceResult">
+        <include refid="selectSource"/>
+        <where>
+            <if test="sourceName != null and sourceName != ''">
+                AND source_name like concat('%', #{sourceName}, '%')
+            </if>
+            <if test="protocol != null and protocol != ''">
+                AND protocol = #{protocol}
+            </if>
+            <if test="addr != null and addr != ''">
+                AND addr like concat('%', #{addr}, '%')
+            </if>
+            <if test="1 == 1">
+                and source_state != 3
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertSource" parameterType="com.cogent.system.domain.DO.route.SourceDO" useGeneratedKeys="true" keyProperty="id">
+        insert into source_device (source_name, protocol, protocol_type, addr, port, srt_more, source_state,
+                                   create_time, update_time)
+        values (#{sourceName}, #{protocol}, #{protocolType}, #{addr}, #{port}, #{srtMore}, #{sourceState}, sysdate(),
+                sysdate()) on duplicate key
+        update port= #{port}, source_state= #{sourceState}
+    </insert>
+
+    <insert id="insertOrUpdateSource" parameterType="com.cogent.system.domain.DO.route.SourceDO" useGeneratedKeys="true" keyProperty="id">
+        insert into source_device (source_name, protocol, protocol_type, addr, port, srt_more, source_state,
+                                   create_time, update_time)
+        values (#{sourceName}, #{protocol}, #{protocolType}, #{addr}, #{port}, #{srtMore}, #{sourceState}, sysdate(),
+                sysdate()) on duplicate key
+        update
+            protocol = #{protocol},
+            protocol_type = #{protocolType},
+            addr = #{addr},
+            port = #{port}
+    </insert>
+
+    <update id="updateSource" parameterType="com.cogent.system.domain.DO.route.SourceDO">
+        update source_device
+        <set>
+            <if test="sourceName != null and sourceName != ''">source_name = #{sourceName},</if>
+            <if test="protocol != null and protocol != ''">protocol = #{protocol},</if>
+            <if test="protocolType != null and protocolType != ''">protocol_type = #{protocolType},</if>
+            <if test="addr != null and addr != ''">addr = #{addr},</if>
+            <if test="port != null and port != ''">port = #{port},</if>
+            <if test="srtMore != null and srtMore != ''">srt_more = #{srtMore},</if>
+            <if test="sourceState != null">source_state = #{sourceState},</if>
+            update_time = sysdate()
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSourceByIds">
+        delete from source_device where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>

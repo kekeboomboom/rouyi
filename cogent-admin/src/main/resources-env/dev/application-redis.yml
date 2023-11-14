@@ -1,0 +1,45 @@
+spring:
+  # redis 配置
+  redis:
+    # 地址
+    host: 192.168.16.46
+    # 端口，默认为6380
+    port: 6379
+    # 数据库索引
+    #database: 1
+    # 密码
+    password: keboom
+    # 连接超时时间
+    timeout: 10s
+    lettuce:
+      pool:
+        # 连接池中的最小空闲连接
+        min-idle: 0
+        # 连接池中的最大空闲连接
+        max-idle: 8
+        # 连接池的最大数据库连接数
+        max-active: 8
+        # #连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1ms
+    redisson:
+      config: |
+        singleServerConfig:
+          idleConnectionTimeout: 10000
+          connectTimeout: 10000
+          timeout: 3000
+          retryAttempts: 3
+          retryInterval: 1500
+          password: keboom
+          subscriptionsPerConnection: 5
+          clientName: null
+          address: "redis://192.168.16.46:6379"
+          subscriptionConnectionMinimumIdleSize: 1
+          subscriptionConnectionPoolSize: 50
+          connectionMinimumIdleSize: 24
+          connectionPoolSize: 64
+          database: 0
+          dnsMonitoringInterval: 5000
+        threads: 16
+        nettyThreads: 32
+        transportMode: "NIO"
+#codec: !<org.redisson.codec.Kryo5Codec> { }

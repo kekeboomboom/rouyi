@@ -1,0 +1,38 @@
+server:
+  port: 8081
+HOST_IP: 192.168.16.46
+GB_ENABLE: false
+interface: eth0
+externIp:
+NMS_enable: false
+map_provider: gaode
+mobicaster_url: http://127.0.0.1:8082
+smh:
+  #    base_url: http://127.0.0.1:9001  如果他们的SMH不是docker部署，而是在宿主机部署，那么docker要访问宿主机则不是127.0.0.1，而是 host.docker.internal
+  #  base_url: http://192.168.16.21:9001
+  base_url: http://192.168.16.46:9001
+
+gateway:
+  base_url: http://192.168.16.46:61616
+
+transcoding:
+  base_url: http://192.168.16.46:9004
+
+mediakit:
+  base_url: http://192.168.16.46:8081
+  secret: 035c73f7-bb6b-4889-a715-d9eb2d1925cc   # 这个值可以在mediakit配置文件中进行设置
+
+GB:
+  base_url: http://192.168.16.46:9005
+
+source:
+  interface: eth0
+
+foldback:
+  port: 9000
+
+minio:
+  addr: 192.168.16.46:9002
+  accessKey: xFkEokGRxAlwIs4Vw5cO
+  secretKey: jaz4FlvCDDKvbBuQYJ9NIohMUlRDsT09F1PZH6KB
+

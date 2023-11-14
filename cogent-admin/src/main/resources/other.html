@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script type="text/javascript">
+    // const evtSource = new EventSource("http://192.168.16.46:8080/voice-call/group/sse/joinedGroup?memberNumber=admin");
+    const evtSource2 = new EventSource("http://127.0.0.1:8081/voice-call/group/sse/joinedGroup?memberNumber=admin");
+    const evtSource3 = new EventSource("http://127.0.0.1:8081/voice-call/group/sse/groupInfo?groupNumber=89651");
+    // const eventList = document.querySelector("ul");
+    window.onbeforeunload = function (event) {
+        evtSource3.close()
+        evtSource2.close()
+        event.returnValue = "Write something clever here..";
+    };
+
+    // evtSource.addEventListener("heartBeat", (e) => {
+    //     console.log(e.data);
+    // });
+    evtSource2.addEventListener("heartBeat", (e) => {
+        console.log(e.data);
+    })
+
+    // evtSource.onmessage = (e) => {
+    //   const newElement = document.createElement("li");
+    //
+    //   newElement.textContent = `message: ${e.data}`;
+    //   eventList.appendChild(newElement);
+    // };
+</script>
+</body>
+</html>

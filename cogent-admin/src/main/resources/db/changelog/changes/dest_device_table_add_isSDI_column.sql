@@ -1,0 +1,1 @@
+ALTER TABLE `cogent-admin`.`dest_device` ADD COLUMN `is_sdi` tinyint(1) NOT NULL DEFAULT 0 AFTER `dest_state`;

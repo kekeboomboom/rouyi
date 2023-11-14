@@ -1,0 +1,12 @@
+INSERT INTO `sys_menu` VALUES (1068, '预览中心', 0, 0, 'index', 'preview/index', NULL, 1, 1, 'C', '0', '0', 'preview:index', 'preview', 'admin', '2023-08-10 09:02:10', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1069, '路由管理', 0, 1, 'route', NULL, NULL, 1, 0, 'M', '0', '0', '', 'route-manage', 'admin', '2023-08-10 09:07:22', 'admin', '2023-08-10 09:08:22', '');
+INSERT INTO `sys_menu` VALUES (1070, '路由列表', 1069, 1, 'route-list', 'route/routelist/index', NULL, 1, 1, 'C', '0', '0', 'route:routelist:index', 'routelist', 'admin', '2023-08-10 09:09:41', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1071, '源管理', 1069, 2, 'source', 'route/source/index', NULL, 1, 1, 'C', '0', '0', 'route:source:index', 'source', 'admin', '2023-08-10 09:13:11', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1072, '目的地管理', 1069, 3, 'destination', 'route/destination/index', NULL, 1, 1, 'C', '0', '0', 'route:destination:index', 'destination', 'admin', '2023-08-10 09:14:15', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1073, '背包管理', 0, 2, 'backpack-management', NULL, NULL, 1, 0, 'M', '0', '0', NULL, 'device-manage', 'admin', '2023-08-10 09:46:41', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1074, '背包列表', 1073, 1, 'backpack', 'device/backpack/index', NULL, 1, 0, 'C', '0', '0', 'device:backpack:index', 'backpack', 'admin', '2023-08-10 09:47:31', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1075, '背包监控', 1073, 2, 'bacapack-monitor', 'device/monitor/index', NULL, 1, 1, 'C', '0', '0', 'device:monitor:index', 'backpack-monitor', 'admin', '2023-08-10 09:48:38', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1076, '黑名单', 1073, 3, 'blacklist', 'device/blacklist/index', NULL, 1, 1, 'C', '0', '0', 'device:blacklist:index', 'blacklist-manage', 'admin', '2023-08-10 09:49:32', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1077, '返送管理', 1073, 4, 'foldback', 'device/foldback/index', NULL, 1, 1, 'C', '0', '0', 'device:foldback:index', 'foldback-manager', 'admin', '2023-08-10 09:50:19', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1078, '编辑路由', 1069, 5, 'RouteUpdate', 'route/routeupdate/index', NULL, 1, 1, 'C', '1', '0', 'route:routeupdate:index', '#', 'admin', '2023-08-10 11:24:38', 'admin', '2023-08-10 11:28:56', '');
+INSERT INTO `sys_menu` VALUES (1079, '新建路由', 1069, 4, 'RouteCreate', 'route/routecreate/index', NULL, 1, 1, 'C', '1', '0', 'route:routecreate:index', '#', 'admin', '2023-08-10 11:25:49', 'admin', '2023-08-10 11:28:24', '');

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cogent.system.mapper.RouteMapper">
+
+    <resultMap id="routeResult" type="Route">
+        <id property="id" column="id"/>
+        <result property="routeName" column="route_name"/>
+        <result property="startStop" column="start_stop"/>
+        <result property="sourceId" column="source_id"/>
+        <result property="destIds" column="dest_ids"/>
+        <result property="runTime" column="run_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="uuid" column="uuid"/>
+    </resultMap>
+
+    <sql id="selectRoute">
+        select id, route_name, start_stop, source_id, dest_ids, run_time, uuid
+        from route
+    </sql>
+
+    <select id="selectRouteList" resultMap="routeResult">
+        <include refid="selectRoute"></include>
+        <where>
+            <if test="routeName != null and routeName != ''">
+                AND route_name like concat('%',#{routeName}, '%')
+            </if>
+            <if test="1==1">
+                and uuid != ""
+            </if>
+        </where>
+
+    </select>
+    <select id="selectRouteById" parameterType="Integer" resultMap="routeResult">
+        <include refid="selectRoute"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectRouteByIds" resultMap="routeResult">
+        <include refid="selectRoute"/>
+        where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(0)
+        from route
+        where uuid != ""
+    </select>
+
+    <select id="selectRouteBySourceId" resultMap="routeResult">
+        <include refid="selectRoute"/>
+        where source_id = #{id}
+    </select>
+
+    <select id="selectRouteByUuid" resultMap="routeResult">
+        <include refid="selectRoute"/>
+        where uuid = #{uuid}
+    </select>
+
+    <insert id="insertRoute" parameterType="Route" useGeneratedKeys="true" keyProperty="id">
+        insert into route (route_name, start_stop, source_id, dest_ids, run_time, uuid, create_time)
+        values (#{routeName}, #{startStop}, #{sourceId}, #{destIds}, #{runTime}, #{uuid},
+                sysdate()) on duplicate key
+        update start_stop = #{startStop},uuid = #{uuid}
+    </insert>
+
+    <update id="updateRoute" parameterType="Route">
+        update route
+        <set>
+            <if test="routeName != null and routeName != ''">route_name = #{routeName},</if>
+            <if test="sourceId != null and sourceId != ''">source_id = #{sourceId},</if>
+            <if test="destIds != null">dest_ids = #{destIds},</if>
+            <if test="uuid != null and uuid != ''">uuid = #{uuid}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRouteByIds">
+        delete
+        from route
+        where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="switchRoute">
+        update route
+        set start_stop = #{startStop}
+        where id = #{routeId}
+    </update>
+
+</mapper>

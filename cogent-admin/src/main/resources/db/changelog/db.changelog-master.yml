@@ -1,0 +1,155 @@
+databaseChangeLog:
+  - preConditions:
+      - dbms:
+          type: mysql
+      - runningAs:
+          username: root
+  - changeSet:
+      id: 202308081722
+      author: keboom
+      changes:
+        - sqlFile:
+            dbms: mysql
+            endDelimiter: ";"
+            encoding: "UTF-8"
+            path: classpath:/db/changelog/changes/add_board_manager.sql
+  - changeSet:
+      id: 202308090949
+      author: keboom
+      changes:
+        - sqlFile:
+            dbms: mysql
+            endDelimiter: ";"
+            encoding: "UTF-8"
+            path: classpath:/db/changelog/changes/dest_device_table_add_isSDI_column.sql
+  - changeSet:
+      id: 202308091551
+      author: keboom
+      changes:
+        - sqlFile:
+            dbms: mysql
+            endDelimiter: ";"
+            encoding: "UTF-8"
+            path: classpath:/db/changelog/changes/backpack_add_unique_index.sql
+  - changeSet:
+      id: 202308101334
+      author: keboom
+      changes:
+        - sqlFile:
+            dbms: mysql
+            endDelimiter: ";"
+            encoding: "UTF-8"
+            path: classpath:/db/changelog/changes/add_sys_menu.sql
+  - changeSet:
+      id: 202308101617
+      author: keboom
+      changes:
+        - sqlFile:
+            dbms: mysql
+            endDelimiter: ";"
+            encoding: "UTF-8"
+            path: classpath:/db/changelog/changes/modify_board_menu.sql
+  - changeSet:
+      id: 202308110916
+      author: keboom
+      changes:
+        - sqlFile:
+            dbms: mysql
+            endDelimiter: ";"
+            encoding: "UTF-8"
+            path: classpath:/db/changelog/changes/add_route_dest_relation.sql
+  - changeSet:
+      id: 202308111016
+      author: keboom
+      changes:
+        - customChange: { "class": "com.cogent.web.changelog.InitRouteDestRel" }
+  - changeSet:
+      id: 202308171739
+      author: keboom
+      changes:
+        - sqlFile:
+            dbms: mysql
+            endDelimiter: ";"
+            encoding: "UTF-8"
+            path: classpath:/db/changelog/changes/add_foldback_delay.sql
+  - changeSet:
+      id: 202308211010
+      author: keboom
+      changes:
+        - sqlFile:
+            dbms: mysql
+            endDelimiter: ";"
+            encoding: "UTF-8"
+            path: classpath:/db/changelog/changes/add_device_upgrade.sql
+  - changeSet:
+      id: 202308281445
+      author: keboom
+      changes:
+        - sqlFile:
+            dbms: mysql
+            endDelimiter: ";"
+            encoding: "UTF-8"
+            path: classpath:/db/changelog/changes/add_minio_object.sql
+  - changeSet:
+      id: 202308311513
+      author: keboom
+      changes:
+        - sqlFile:
+            dbms: mysql
+            endDelimiter: ";"
+            encoding: "UTF-8"
+            path: classpath:/db/changelog/changes/add_device_state.sql
+  - changeSet:
+      id: 202309041636
+      author: keboom
+      changes:
+        - sqlFile:
+            dbms: mysql
+            endDelimiter: ";"
+            encoding: "UTF-8"
+            path: classpath:/db/changelog/changes/add_gps_info.sql
+  - changeSet:
+      id: 202309071546
+      author: keboom
+      changes:
+        - sqlFile:
+            dbms: mysql
+            endDelimiter: ";"
+            encoding: "UTF-8"
+            path: classpath:/db/changelog/changes/add_device_gps_cur.sql
+  - changeSet:
+      id: 202309071639
+      author: keboom
+      changes:
+        - sqlFile:
+            dbms: mysql
+            endDelimiter: ";"
+            encoding: "UTF-8"
+            path: classpath:/db/changelog/changes/add_marker_map.sql
+  - changeSet:
+      id: 202310091750
+      author: keboom
+      changes:
+        - sqlFile:
+            dbms: mysql
+            endDelimiter: ";"
+            encoding: "UTF-8"
+            path: classpath:/db/changelog/changes/add_android_version.sql
+  - changeSet:
+      id: 202310201602
+      author: keboom
+      changes:
+        - sqlFile:
+            dbms: mysql
+            endDelimiter: ";"
+            encoding: "UTF-8"
+            path: classpath:/db/changelog/changes/add_record_switch.sql
+  - changeSet:
+      id: 202310241608
+      author: keboom
+      changes:
+        - sqlFile:
+            dbms: mysql
+            endDelimiter: ";"
+            encoding: "UTF-8"
+            path: classpath:/db/changelog/changes/add_video_record.sql

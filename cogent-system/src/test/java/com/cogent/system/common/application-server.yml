@@ -1,0 +1,29 @@
+server:
+  port: 8084
+HOST_IP: 127.0.0.1
+GB_ENABLE: false
+interface:
+externIp:
+sdi_switch: true
+NMS_enable: false
+smh:
+  base_url: http://${HOST_IP}:9001
+gateway:
+  base_url: http://${HOST_IP}:61616
+transcoding:
+  base_url: http://${HOST_IP}:9004
+mediakit:
+  base_url: http://${HOST_IP}:8081
+  secret: 035c73f7-bb6b-4889-a715-d9eb2d1925cc
+GB:
+  base_url: http://${HOST_IP}:9005
+source:
+  interface: ${interface}
+foldback:
+  port: ${FOLDBACK_PORT:9000}
+gb:
+  enable: ${GB_ENABLE:false}
+minio:
+  addr: ${HOST_IP}:9002
+  accessKey: xFkEokGRxAlwIs4Vw5cO
+  secretKey: jaz4FlvCDDKvbBuQYJ9NIohMUlRDsT09F1PZH6KB
